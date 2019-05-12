@@ -1,3 +1,37 @@
-<p>
-  login works!
-</p>
+<form class="padding" fxLayoutAlign.gt-xs="center" (submit)="login()">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>ZC Tea Admin Portal</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="login-form-container">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput type="text" placeholder="Enter your username" [formControl]="usernameFormControl">
+          <mat-error *ngIf="usernameFormControl.hasError('required')">
+            Username cannot be blank!
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password"
+            [formControl]="passwordFormControl">
+          <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+          <mat-error *ngIf="passwordFormControl.hasError('required')">
+            Password cannot be blank!
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <span fxFlex></span>
+      <mat-spinner diameter="36" *ngIf="loading"></mat-spinner>
+      <button mat-raised-button type="submit" color="primary" [disabled]="loading">Login</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
