@@ -19,3 +19,7 @@ body {
     color: #fff;
     background-color: #f44336;
 }
+
+.background-disable {
+    background-color: lightgray;
+}

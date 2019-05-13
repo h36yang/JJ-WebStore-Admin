@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 
+import { AppSettings } from '../app.settings';
 import { ApiService } from '../api.service';
 import { LoginToken } from './login-token';
 
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.api.userLogin(this.usernameFormControl.value, this.passwordFormControl.value)
       .subscribe(
         (data: LoginToken) => {
-          localStorage.setItem('jjwebstoretoken', data.token);
+          localStorage.setItem(AppSettings.API_TOKEN_KEY, data.token);
           this.loading = false;
         },
         error => {

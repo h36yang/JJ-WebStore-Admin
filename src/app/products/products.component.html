@@ -1,3 +1,32 @@
-<p>
-  products works!
-</p>
+<div fxLayoutAlign="center center">
+  <mat-spinner diameter="48" *ngIf="loading"></mat-spinner>
+</div>
+
+<div fxLayout="column" class="padding">
+  <div *ngFor="let item of products">
+    <mat-card [ngClass]="{ 'background-disable': !item.isActive }">
+      <mat-card-header>
+        <img mat-card-avatar src="https://zcteaapi.azurewebsites.net/api/Images/{{ item.avatarImageId }}"
+          [alt]="item.name">
+        <mat-card-title>
+          <span>{{ item.id }}. {{ item.name }}</span>
+          <span *ngIf="!item.isActive"> - Inactive</span>
+        </mat-card-title>
+        <mat-card-subtitle fxLayout="column" fxLayout.gt-xs="row">
+          <span>{{ item.type }}</span>
+          <span fxHide.xs="true">&nbsp;|&nbsp;</span>
+          <span>{{ item.price | currency }}</span>
+          <span fxHide.xs="true">&nbsp;|&nbsp;</span>
+          <span>{{ item.categoryId === 1 ? 'Featured (特别推荐)' : 'Hot (热卖商品)' }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-actions>
+        <button mat-button color="primary" [disabled]="!item.isActive">Edit</button>
+        <button mat-button color="warn"
+          (click)="flipProduct(item.id, item.isActive)">{{ item.isActive ? 'Remove' : 'Activate' }}</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-divider></mat-divider>
+  </div>
+</div>
