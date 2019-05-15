@@ -42,6 +42,14 @@ export class ApiService {
       );
   }
 
+  getProduct(id: number): Observable<Product> {
+    const url = `${this.baseApi}Products/${id}`;
+    return this.http.get<Product>(url, this.sharedHttpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   deleteProduct(id: number): Observable<any> {
     const url = `${this.baseApi}Products/${id}`;
     return this.http.delete(url, this.sharedHttpOptions)
@@ -68,7 +76,7 @@ export class ApiService {
       console.error(`Backend returned code ${error.status}, body was: \n${JSON.stringify(error, null, 2)}`);
     }
     // return an observable with a user-facing error message
-    if (error.error) {
+    if (error.error && error.error.message) {
       return throwError(error.error.message);
     } else if (error.message) {
       return throwError(error.message);

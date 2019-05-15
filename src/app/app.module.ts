@@ -8,6 +8,7 @@ import {
   MatListModule,
   MatFormFieldModule,
   MatInputModule,
+  MatSelectModule,
   MatIconModule,
   MatButtonModule,
   MatCardModule,
@@ -22,13 +23,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
 import { ProductsComponent } from './products/products.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UsersComponent,
-    ProductsComponent
+    ProductsComponent,
+    ProductEditComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { ProductsComponent } from './products/products.component';
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,

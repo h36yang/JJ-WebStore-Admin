@@ -10,7 +10,7 @@
           [alt]="item.name">
         <mat-card-title>
           <span>{{ item.id }}. {{ item.name }}</span>
-          <span *ngIf="!item.isActive"> - Inactive</span>
+          <span *ngIf="!item.isActive"> - Removed</span>
         </mat-card-title>
         <mat-card-subtitle fxLayout="column" fxLayout.gt-xs="row">
           <span>{{ item.type }}</span>
@@ -24,7 +24,7 @@
       <mat-card-actions>
         <button mat-button color="primary" [disabled]="!item.isActive">Edit</button>
         <button mat-button color="warn"
-          (click)="flipProduct(item.id, item.isActive)">{{ item.isActive ? 'Remove' : 'Activate' }}</button>
+          (click)="flipProduct(item.id, item.isActive)">{{ item.isActive ? 'Remove' : 'Recover' }}</button>
       </mat-card-actions>
     </mat-card>
     <mat-divider></mat-divider>

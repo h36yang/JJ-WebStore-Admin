@@ -1,0 +1,8 @@
+.edit-product-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-product-form-container>* {
+    width: 100%;
+}

@@ -1,0 +1,105 @@
+<form class="padding" (submit)="save()">
+  <mat-card class="edit-product-card">
+    <mat-card-header>
+      <mat-card-title>Edit Product</mat-card-title>
+      <mat-card-subtitle>Product ID: {{ productId ? productId : 'Not Valid' }}</mat-card-subtitle>
+      <mat-spinner diameter="48" *ngIf="loading"></mat-spinner>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="edit-product-form-container">
+        <mat-form-field>
+          <mat-label>Category *</mat-label>
+          <mat-select [(value)]="productCategory" name="category" [disabled]="!productId">
+            <mat-option value="1">Featured (特别推荐)</mat-option>
+            <mat-option value="2">Hot (热卖商品)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Name *</mat-label>
+          <input matInput type="text" [formControl]="nameFormControl">
+          <mat-error *ngIf="nameFormControl.hasError('required')">
+            Name is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Long Name *</mat-label>
+          <input matInput type="text" [formControl]="longNameFormControl">
+          <mat-error *ngIf="longNameFormControl.hasError('required')">
+            Long Name is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Type *</mat-label>
+          <input matInput type="text" [formControl]="typeFormControl">
+          <mat-error *ngIf="typeFormControl.hasError('required')">
+            Type is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Description *</mat-label>
+          <textarea matInput [formControl]="descFormControl" cdkTextareaAutosize cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="8"></textarea>
+          <mat-error *ngIf="descFormControl.hasError('required')">
+            Description is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Price *</mat-label>
+          <input matInput type="number" [formControl]="priceFormControl">
+          <mat-error *ngIf="priceFormControl.hasError('required')">
+            Price is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Volume *</mat-label>
+          <input matInput type="text" [formControl]="volumeFormControl">
+          <mat-error *ngIf="volumeFormControl.hasError('required')">
+            Volume is <strong>mandatory</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Product Number</mat-label>
+          <input matInput type="text" [formControl]="productNumFormControl">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Ingredient</mat-label>
+          <input matInput type="text" [formControl]="ingredientFormControl">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Origin</mat-label>
+          <input matInput type="text" [formControl]="originFormControl">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Producer</mat-label>
+          <input matInput type="text" [formControl]="producerFormControl">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Highlight</mat-label>
+          <input matInput type="text" [formControl]="highlightFormControl">
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <span fxFlex></span>
+      <mat-spinner diameter="36" *ngIf="updating"></mat-spinner>
+      <button mat-raised-button type="submit" color="primary" [disabled]="!productId">Save</button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+      <p>* Mandatory Fields</p>
+    </mat-card-footer>
+  </mat-card>
+</form>

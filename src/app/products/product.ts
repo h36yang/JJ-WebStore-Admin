@@ -8,13 +8,13 @@ export class Product {
     name: string;
     longName: string;
     description: string;
-    productNumber?: string;
-    ingredient: string;
     type: string;
     price: number;
     volume: string;
-    origin: string;
-    producer: string;
+    productNumber?: string;
+    ingredient?: string;
+    origin?: string;
+    producer?: string;
     highlight?: string;
     isActive: boolean;
     productFunction: ProductFunction[];
