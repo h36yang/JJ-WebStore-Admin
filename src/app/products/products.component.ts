@@ -23,7 +23,8 @@ export class ProductsComponent implements OnInit {
         (data: Product[]) => {
           this.products = data;
           this.loading = false;
-        }
+        },
+        error => this.handleError(error)
       );
   }
 

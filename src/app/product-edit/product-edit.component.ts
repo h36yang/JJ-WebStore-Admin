@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { MatSnackBar, MatDialog } from '@angular/material';
 
 import { ApiService } from '../api.service';
 import { Product } from '../products/product';
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
   selector: 'app-product-edit',
@@ -18,37 +19,31 @@ export class ProductEditComponent implements OnInit {
   productId: number;
   productCategory: string;
 
-  nameFormControl: FormControl;
-  longNameFormControl: FormControl;
-  typeFormControl: FormControl;
-  descFormControl: FormControl;
-  priceFormControl: FormControl;
-  volumeFormControl: FormControl;
-  productNumFormControl: FormControl;
-  ingredientFormControl: FormControl;
-  originFormControl: FormControl;
-  producerFormControl: FormControl;
-  highlightFormControl: FormControl;
+  editProductForm: FormGroup;
 
   constructor(
     private api: ApiService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar) { }
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.updating = false;
 
-    this.nameFormControl = new FormControl('', [Validators.required]);
-    this.longNameFormControl = new FormControl('', [Validators.required]);
-    this.typeFormControl = new FormControl('', [Validators.required]);
-    this.descFormControl = new FormControl('', [Validators.required]);
-    this.priceFormControl = new FormControl('', [Validators.required]);
-    this.volumeFormControl = new FormControl('', [Validators.required]);
-    this.productNumFormControl = new FormControl();
-    this.ingredientFormControl = new FormControl();
-    this.originFormControl = new FormControl();
-    this.producerFormControl = new FormControl();
-    this.highlightFormControl = new FormControl();
+    this.editProductForm = this.formBuilder.group({
+      nameControl: ['', Validators.required],
+      longNameControl: ['', Validators.required],
+      typeControl: ['', Validators.required],
+      descControl: ['', Validators.required],
+      priceControl: ['', Validators.required],
+      volumeControl: ['', Validators.required],
+      productNumControl: [''],
+      ingredientControl: [''],
+      originControl: [''],
+      producerControl: [''],
+      highlightControl: ['']
+    });
 
     this.productId = +this.route.snapshot.paramMap.get('id');
     if (Number.isInteger(this.productId)) {
@@ -56,17 +51,18 @@ export class ProductEditComponent implements OnInit {
       this.api.getProduct(this.productId)
         .subscribe(
           (data: Product) => {
-            this.nameFormControl.setValue(data.name);
-            this.longNameFormControl.setValue(data.longName);
-            this.typeFormControl.setValue(data.type);
-            this.descFormControl.setValue(data.description);
-            this.priceFormControl.setValue(data.price);
-            this.volumeFormControl.setValue(data.volume);
-            this.productNumFormControl.setValue(data.productNumber);
-            this.ingredientFormControl.setValue(data.ingredient);
-            this.originFormControl.setValue(data.origin);
-            this.producerFormControl.setValue(data.producer);
-            this.highlightFormControl.setValue(data.highlight);
+            // this.nameFormControl.setValue(data.name);
+            this.editProductForm.get('nameControl').setValue(data.name);
+            this.editProductForm.get('longNameControl').setValue(data.longName);
+            this.editProductForm.get('typeControl').setValue(data.type);
+            this.editProductForm.get('descControl').setValue(data.description);
+            this.editProductForm.get('priceControl').setValue(data.price);
+            this.editProductForm.get('volumeControl').setValue(data.volume);
+            this.editProductForm.get('productNumControl').setValue(data.productNumber);
+            this.editProductForm.get('ingredientControl').setValue(data.ingredient);
+            this.editProductForm.get('originControl').setValue(data.origin);
+            this.editProductForm.get('producerControl').setValue(data.producer);
+            this.editProductForm.get('highlightControl').setValue(data.highlight);
             this.productCategory = `${data.categoryId}`;
             this.loading = false;
           },
@@ -77,22 +73,34 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
+  openUploadPicturesDialog() {
+    const dialogRef = this.dialog.open(ImageUploadComponent, {
+      width: '50%',
+      height: '50%',
+      data: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // placeholder
+    });
+  }
+
   save() {
     this.updating = true;
     const product: Product = {
       id: this.productId,
       categoryId: +this.productCategory,
-      name: this.nameFormControl.value,
-      longName: this.longNameFormControl.value,
-      type: this.typeFormControl.value,
-      description: this.descFormControl.value,
-      price: this.priceFormControl.value,
-      volume: this.volumeFormControl.value,
-      productNumber: this.productNumFormControl.value,
-      ingredient: this.ingredientFormControl.value,
-      origin: this.originFormControl.value,
-      producer: this.producerFormControl.value,
-      highlight: this.highlightFormControl.value,
+      name: this.editProductForm.get('nameControl').value,
+      longName: this.editProductForm.get('longNameControl').value,
+      type: this.editProductForm.get('typeControl').value,
+      description: this.editProductForm.get('descControl').value,
+      price: this.editProductForm.get('priceControl').value,
+      volume: this.editProductForm.get('volumeControl').value,
+      productNumber: this.editProductForm.get('productNumControl').value,
+      ingredient: this.editProductForm.get('ingredientControl').value,
+      origin: this.editProductForm.get('originControl').value,
+      producer: this.editProductForm.get('producerControl').value,
+      highlight: this.editProductForm.get('highlightControl').value,
       productFunction: [],
       isActive: true
     };
@@ -103,7 +111,6 @@ export class ProductEditComponent implements OnInit {
   private onLoadError(error: string) {
     this.productId = null;
     this.loading = false;
-    this.disableFormControls();
     setTimeout(() => this.showErrorMessage(error));
   }
 
@@ -112,19 +119,5 @@ export class ProductEditComponent implements OnInit {
       duration: 6000,
       verticalPosition: 'top'
     });
-  }
-
-  private disableFormControls() {
-    this.nameFormControl.disable();
-    this.longNameFormControl.disable();
-    this.typeFormControl.disable();
-    this.descFormControl.disable();
-    this.priceFormControl.disable();
-    this.volumeFormControl.disable();
-    this.productNumFormControl.disable();
-    this.ingredientFormControl.disable();
-    this.originFormControl.disable();
-    this.producerFormControl.disable();
-    this.highlightFormControl.disable();
   }
 }

@@ -1,0 +1,42 @@
+<input *ngIf="data" #pictures type="file" accept=".jpg,.jpeg" class="hidden" (change)="onFilesAdded()" multiple />
+<input *ngIf="!data" #pictures type="file" accept=".jpg,.jpeg" class="hidden" (change)="onFilesAdded()" />
+
+<div class="upload-pictures-container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+  <h1 mat-dialog-title>Upload Pictures</h1>
+  <div>
+    <button mat-raised-button class="float-right" color="primary" (click)="addPictures()"
+      [disabled]="uploading || uploadSuccessful">
+      Add Files
+    </button>
+  </div>
+
+  <!-- This is the content of the dialog, containing a list of the files to upload -->
+  <mat-dialog-content fxFlex>
+    <form [formGroup]="uploadPicturesForm">
+      <mat-list formArrayName="pictures">
+        <mat-list-item *ngFor="let picture of picturesControlGroups.controls; let i = index">
+          <div mat-line [formGroupName]="i" fxLayout="row" fxLayout.xs="column">
+            <img mat-list-icon *ngIf="imageUrls[i]" [src]="imageUrls[i]" />
+            <mat-icon mat-list-icon *ngIf="!imageUrls[i]">broken_image</mat-icon>
+            <input class="hidden" formControlName="fileControl">
+            <mat-form-field fxFlex="30">
+              <mat-label>Picture Name *</mat-label>
+              <input matInput type="text" formControlName="nameControl">
+            </mat-form-field>
+            <mat-progress-bar fxFlex *ngIf="uploadProgress" mode="determinate"
+              [value]="uploadProgress[picture.get('nameControl').value] | async">
+            </mat-progress-bar>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </form>
+  </mat-dialog-content>
+
+  <!-- This are the actions of the dialog, containing the primary and the cancel button-->
+  <mat-dialog-actions class="actions">
+    <button mat-button mat-dialog-close *ngIf="showCancelButton">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!canBeClosed" (click)="closeDialog()">
+      {{ primaryButtonText }}
+    </button>
+  </mat-dialog-actions>
+</div>

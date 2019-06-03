@@ -1,12 +1,16 @@
-<form class="padding" (submit)="save()">
-  <mat-card class="edit-product-card">
-    <mat-card-header>
-      <mat-card-title>Edit Product</mat-card-title>
-      <mat-card-subtitle>Product ID: {{ productId ? productId : 'Not Valid' }}</mat-card-subtitle>
-      <mat-spinner diameter="48" *ngIf="loading"></mat-spinner>
-    </mat-card-header>
+<mat-toolbar color="primary">
+  <span>Edit Product</span>
+  <span *ngIf="productId">&nbsp;- Product ID: {{ productId }}</span>
+  <mat-spinner diameter="48" *ngIf="loading"></mat-spinner>
+</mat-toolbar>
 
-    <mat-card-content>
+<div *ngIf="!productId">
+  <p class="center">Invalid ID - Nothing to show</p>
+</div>
+
+<mat-vertical-stepper #editProductStepper *ngIf="productId" linear="true">
+  <mat-step label="Fill out basic info" [stepControl]="editProductForm">
+    <form [formGroup]="editProductForm">
       <div class="edit-product-form-container">
         <mat-form-field>
           <mat-label>Category *</mat-label>
@@ -18,88 +22,102 @@
 
         <mat-form-field>
           <mat-label>Name *</mat-label>
-          <input matInput type="text" [formControl]="nameFormControl">
-          <mat-error *ngIf="nameFormControl.hasError('required')">
+          <input matInput type="text" formControlName="nameControl">
+          <mat-error *ngIf="editProductForm.get('nameControl').hasError('required')">
             Name is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Long Name *</mat-label>
-          <input matInput type="text" [formControl]="longNameFormControl">
-          <mat-error *ngIf="longNameFormControl.hasError('required')">
+          <input matInput type="text" formControlName="longNameControl">
+          <mat-error *ngIf="editProductForm.get('longNameControl').hasError('required')">
             Long Name is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Type *</mat-label>
-          <input matInput type="text" [formControl]="typeFormControl">
-          <mat-error *ngIf="typeFormControl.hasError('required')">
+          <input matInput type="text" formControlName="typeControl">
+          <mat-error *ngIf="editProductForm.get('typeControl').hasError('required')">
             Type is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Description *</mat-label>
-          <textarea matInput [formControl]="descFormControl" cdkTextareaAutosize cdkAutosizeMinRows="2"
+          <textarea matInput formControlName="descControl" cdkTextareaAutosize cdkAutosizeMinRows="2"
             cdkAutosizeMaxRows="8"></textarea>
-          <mat-error *ngIf="descFormControl.hasError('required')">
+          <mat-error *ngIf="editProductForm.get('descControl').hasError('required')">
             Description is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Price *</mat-label>
-          <input matInput type="number" [formControl]="priceFormControl">
-          <mat-error *ngIf="priceFormControl.hasError('required')">
+          <input matInput type="number" formControlName="priceControl">
+          <mat-error *ngIf="editProductForm.get('priceControl').hasError('required')">
             Price is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Volume *</mat-label>
-          <input matInput type="text" [formControl]="volumeFormControl">
-          <mat-error *ngIf="volumeFormControl.hasError('required')">
+          <input matInput type="text" formControlName="volumeControl">
+          <mat-error *ngIf="editProductForm.get('volumeControl').hasError('required')">
             Volume is <strong>mandatory</strong>
           </mat-error>
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Product Number</mat-label>
-          <input matInput type="text" [formControl]="productNumFormControl">
+          <input matInput type="text" formControlName="productNumControl">
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Ingredient</mat-label>
-          <input matInput type="text" [formControl]="ingredientFormControl">
+          <input matInput type="text" formControlName="ingredientControl">
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Origin</mat-label>
-          <input matInput type="text" [formControl]="originFormControl">
+          <input matInput type="text" formControlName="originControl">
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Producer</mat-label>
-          <input matInput type="text" [formControl]="producerFormControl">
+          <input matInput type="text" formControlName="producerControl">
         </mat-form-field>
 
         <mat-form-field>
           <mat-label>Highlight</mat-label>
-          <input matInput type="text" [formControl]="highlightFormControl">
+          <input matInput type="text" formControlName="highlightControl">
         </mat-form-field>
+
+        <p><i>* Mandatory Fields</i></p>
       </div>
-    </mat-card-content>
+    </form>
 
-    <mat-card-actions>
-      <span fxFlex></span>
-      <mat-spinner diameter="36" *ngIf="updating"></mat-spinner>
-      <button mat-raised-button type="submit" color="primary" [disabled]="!productId">Save</button>
-    </mat-card-actions>
+    <div>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
 
-    <mat-card-footer>
-      <p>* Mandatory Fields</p>
-    </mat-card-footer>
-  </mat-card>
-</form>
+  <mat-step label="Upload pictures">
+    <div class="upload-pictures-form-container">
+      <button mat-raised-button (click)="openUploadPicturesDialog()">Upload Pictures</button>
+    </div>
+
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+
+  <mat-step label="Done">
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-raised-button color="primary" [disabled]="!productId" (click)="save()">Save</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

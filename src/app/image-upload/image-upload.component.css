@@ -1,0 +1,7 @@
+.upload-pictures-container {
+    height: 100%;
+}
+
+.actions {
+    justify-content: flex-end;
+}
