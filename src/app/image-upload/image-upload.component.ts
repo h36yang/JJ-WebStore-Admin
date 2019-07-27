@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { forkJoin, Observable, Subject } from 'rxjs';
 
 import { TrimFileExtPipe } from '../trim-file-ext.pipe';
 import { Image } from '../image-upload/image';
 import { ImageService, UploadObservable } from '../image.service';
-import { SSL_OP_SINGLE_DH_USE } from 'constants';
 
 @Component({
   selector: 'app-image-upload',
@@ -17,7 +16,7 @@ import { SSL_OP_SINGLE_DH_USE } from 'constants';
 })
 export class ImageUploadComponent implements OnInit {
 
-  @ViewChild('pictures') pictures: ElementRef;
+  @ViewChild('pictures', { static: false }) pictures: ElementRef;
   uploadPicturesForm: FormGroup;
 
   imageFiles: { [key: string]: File };
