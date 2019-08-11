@@ -83,7 +83,7 @@ export class ImageUploadComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imageUrls[key] = reader.result;
-    }
+    };
     reader.readAsDataURL(image);
   }
 
@@ -111,7 +111,7 @@ export class ImageUploadComponent implements OnInit {
     this.uploadProgress = {};
     const allProgressObservables: Observable<number>[] = [];
 
-    for (const key in this.uploadResults) {
+    for (const key of Object.keys(this.uploadResults)) {
       // create a new progress-subject for every file
       const progress = new Subject<number>();
 
