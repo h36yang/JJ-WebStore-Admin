@@ -7,7 +7,7 @@ import { forkJoin, Observable, Subject } from 'rxjs';
 
 import { TrimFileExtPipe } from '../trim-file-ext.pipe';
 import { Image } from '../image-upload/image';
-import { ImageService, UploadObservable } from '../image.service';
+import { ImageService, UploadObservable } from '../services/image.service';
 
 @Component({
   selector: 'app-image-upload',

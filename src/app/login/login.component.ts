@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AppSettings } from '../app.settings';
-import { ApiService } from '../api.service';
+import { UserService } from '../services/user.service';
 import { LoginToken } from './login-token';
 
 @Component({
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   usernameFormControl: FormControl;
   passwordFormControl: FormControl;
 
-  constructor(private api: ApiService, private snackBar: MatSnackBar) { }
+  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loading = false;
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.api.userLogin(this.usernameFormControl.value, this.passwordFormControl.value)
+    this.userService.authenticate(this.usernameFormControl.value, this.passwordFormControl.value)
       .subscribe(
         (data: LoginToken) => {
           localStorage.setItem(AppSettings.API_TOKEN_KEY, data.token);

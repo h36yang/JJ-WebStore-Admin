@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AppSettings } from '../app.settings';
-import { ApiService } from '../api.service';
+import { environment } from '../../environments/environment';
+import { ProductService } from '../services/product.service';
 import { Product } from './product';
 
 @Component({
@@ -16,12 +16,12 @@ export class ProductsComponent implements OnInit {
   products: Product[];
   baseApi: string;
 
-  constructor(private api: ApiService, private snackBar: MatSnackBar) {
-    this.baseApi = AppSettings.API_BASE_URL;
+  constructor(private productService: ProductService, private snackBar: MatSnackBar) {
+    this.baseApi = environment.baseApi;
   }
 
   ngOnInit() {
-    this.api.getAllProducts()
+    this.productService.getAllProducts()
       .subscribe(
         (data: Product[]) => {
           this.products = data;
@@ -34,13 +34,13 @@ export class ProductsComponent implements OnInit {
   flipProduct(id: number, toDelete: boolean) {
     this.loading = true;
     if (toDelete) {
-      this.api.deleteProduct(id)
+      this.productService.deleteProduct(id)
         .subscribe(
           () => this.ngOnInit(),
           error => this.handleError(error)
         );
     } else {
-      this.api.recoverProduct(id)
+      this.productService.recoverProduct(id)
         .subscribe(
           () => this.ngOnInit(),
           error => this.handleError(error)

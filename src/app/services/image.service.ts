@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpEventType, HttpHeaders, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders, HttpEvent } from '@angular/common/http';
 
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { AppSettings } from './app.settings';
-import { Image } from './image-upload/image';
+import { environment } from '../../environments/environment';
+import { Image } from '../image-upload/image';
 
 export interface UploadObservable {
   [name: string]: Observable<HttpEvent<Image>>;
@@ -18,7 +18,7 @@ export class ImageService {
   baseApi: string;
 
   constructor(private http: HttpClient) {
-    this.baseApi = AppSettings.API_BASE_URL;
+    this.baseApi = environment.baseApi;
   }
 
   uploadImages(images: Image[]): UploadObservable {

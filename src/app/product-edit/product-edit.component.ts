@@ -4,7 +4,7 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ApiService } from '../api.service';
+import { ProductService } from '../services/product.service';
 import { Product } from '../products/product';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
@@ -23,7 +23,7 @@ export class ProductEditComponent implements OnInit {
   editProductForm: FormGroup;
 
   constructor(
-    private api: ApiService,
+    private productService: ProductService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -49,7 +49,7 @@ export class ProductEditComponent implements OnInit {
     this.productId = +this.route.snapshot.paramMap.get('id');
     if (Number.isInteger(this.productId)) {
       this.loading = true;
-      this.api.getProduct(this.productId)
+      this.productService.getProduct(this.productId)
         .subscribe(
           (data: Product) => {
             // this.nameFormControl.setValue(data.name);

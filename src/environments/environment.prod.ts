@@ -1,3 +1,6 @@
+
 export const environment = {
-  production: true
+
+  production: true,
+  baseApi: 'https://zcteaapi.azurewebsites.net/api/'
 };

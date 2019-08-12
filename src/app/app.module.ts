@@ -20,8 +20,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './auth.interceptor';
-import { ApiService } from './api.service';
-import { ImageService } from './image.service';
+import { SharedService } from './services/shared.service';
+import { UserService } from './services/user.service';
+import { ProductService } from './services/product.service';
+import { ImageService } from './services/image.service';
 import { TrimFileExtPipe } from './trim-file-ext.pipe';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -69,7 +71,9 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
       useClass: AuthInterceptor,
       multi: true,
     },
-    ApiService,
+    SharedService,
+    UserService,
+    ProductService,
     ImageService,
     TrimFileExtPipe
   ],
