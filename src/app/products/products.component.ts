@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { AppSettings } from '../app.settings';
 import { ApiService } from '../api.service';
 import { Product } from './product';
 
@@ -11,13 +12,15 @@ import { Product } from './product';
 })
 export class ProductsComponent implements OnInit {
 
-  loading: boolean;
+  loading = true;
   products: Product[];
+  baseApi: string;
 
-  constructor(private api: ApiService, private snackBar: MatSnackBar) { }
+  constructor(private api: ApiService, private snackBar: MatSnackBar) {
+    this.baseApi = AppSettings.API_BASE_URL;
+  }
 
   ngOnInit() {
-    this.loading = true;
     this.api.getAllProducts()
       .subscribe(
         (data: Product[]) => {

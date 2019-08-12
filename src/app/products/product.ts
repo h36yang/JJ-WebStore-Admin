@@ -3,7 +3,7 @@ export class Product {
 
     id: number;
     categoryId: number;
-    avatarImageId?: number;
+    avatarId?: number;
     productImageIds?: number[];
     name: string;
     longName: string;
@@ -17,7 +17,7 @@ export class Product {
     producer?: string;
     highlight?: string;
     isActive: boolean;
-    productFunction: ProductFunction[];
+    functions: ProductFunction[];
 }
 
 export class ProductFunction {

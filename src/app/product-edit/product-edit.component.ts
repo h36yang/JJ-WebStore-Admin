@@ -102,7 +102,7 @@ export class ProductEditComponent implements OnInit {
       origin: this.editProductForm.get('originControl').value,
       producer: this.editProductForm.get('producerControl').value,
       highlight: this.editProductForm.get('highlightControl').value,
-      productFunction: [],
+      functions: [],
       isActive: true
     };
     console.log(product);

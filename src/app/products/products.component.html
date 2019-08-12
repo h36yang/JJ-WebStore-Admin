@@ -10,7 +10,7 @@
   <div *ngFor="let item of products">
     <mat-card [ngClass]="{ 'background-disable': !item.isActive }">
       <mat-card-header>
-        <img mat-card-avatar src="https://zcteaapi.azurewebsites.net/api/Images/{{ item.avatarImageId }}"
+        <img mat-card-avatar src="{{ baseApi }}Images/{{ item.avatarId }}"
           [alt]="item.name">
         <mat-card-title>
           <span>{{ item.id }}. {{ item.name }}</span>
