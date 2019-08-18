@@ -33,7 +33,7 @@ export class ImageUploadComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: boolean,
-    private dialogRef: MatDialogRef<ImageUploadComponent>,
+    private dialogRef: MatDialogRef<ImageUploadComponent, Image[]>,
     private imageService: ImageService,
     private trimFileExtPipe: TrimFileExtPipe,
     private formBuilder: FormBuilder) { }
@@ -90,7 +90,7 @@ export class ImageUploadComponent implements OnInit {
   closeDialog() {
     // if everything was uploaded already, just close the dialog
     if (this.uploadSuccessful) {
-      return this.dialogRef.close();
+      return this.dialogRef.close(this.imageResults);
     }
 
     // set the component state to "uploading"

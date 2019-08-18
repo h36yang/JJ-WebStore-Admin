@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ProductService } from '../services/product.service';
 import { Product } from '../products/product';
+import { Image } from '../image-upload/image';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
@@ -15,10 +16,12 @@ import { ImageUploadComponent } from '../image-upload/image-upload.component';
 })
 export class ProductEditComponent implements OnInit {
 
-  loading: boolean;
-  updating: boolean;
+  loading = false;
+  updating = false;
+
   productId: number;
   productCategory: string;
+  productImageIds: number[] = [];
 
   editProductForm: FormGroup;
 
@@ -27,11 +30,7 @@ export class ProductEditComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog) { }
-
-  ngOnInit() {
-    this.updating = false;
-
+    private dialog: MatDialog) {
     this.editProductForm = this.formBuilder.group({
       nameControl: ['', Validators.required],
       longNameControl: ['', Validators.required],
@@ -45,14 +44,15 @@ export class ProductEditComponent implements OnInit {
       producerControl: [''],
       highlightControl: ['']
     });
+  }
 
+  ngOnInit() {
     this.productId = +this.route.snapshot.paramMap.get('id');
     if (Number.isInteger(this.productId)) {
       this.loading = true;
       this.productService.getProduct(this.productId)
         .subscribe(
           (data: Product) => {
-            // this.nameFormControl.setValue(data.name);
             this.editProductForm.get('nameControl').setValue(data.name);
             this.editProductForm.get('longNameControl').setValue(data.longName);
             this.editProductForm.get('typeControl').setValue(data.type);
@@ -81,8 +81,8 @@ export class ProductEditComponent implements OnInit {
       data: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // placeholder
+    dialogRef.afterClosed().subscribe((result: Image[]) => {
+      this.productImageIds = result.map(x => x.id);
     });
   }
 
@@ -103,6 +103,7 @@ export class ProductEditComponent implements OnInit {
       producer: this.editProductForm.get('producerControl').value,
       highlight: this.editProductForm.get('highlightControl').value,
       functions: [],
+      productImageIds: this.productImageIds,
       isActive: true
     };
     console.log(product);
