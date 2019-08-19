@@ -1,0 +1,9 @@
+<header>
+    <mat-toolbar color="primary">
+        <span fxFlex></span>
+        <div *ngIf="user">
+            <span>Current User: {{ user.username }}&nbsp;</span>
+            <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+        </div>
+    </mat-toolbar>
+</header>

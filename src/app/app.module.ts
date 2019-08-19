@@ -31,6 +31,8 @@ import { UsersComponent } from './users/users.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
     ProductsComponent,
     ProductEditComponent,
     ImageUploadComponent,
-    TrimFileExtPipe
+    TrimFileExtPipe,
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

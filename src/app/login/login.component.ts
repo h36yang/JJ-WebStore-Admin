@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AppSettings } from '../app.settings';
+import { User } from '../users/user';
 import { UserService } from '../services/user.service';
-import { LoginToken } from './login-token';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,10 @@ export class LoginComponent implements OnInit {
   usernameFormControl: FormControl;
   passwordFormControl: FormControl;
 
-  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
+  constructor(
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private userService: UserService) { }
 
   ngOnInit() {
     this.loading = false;
@@ -35,9 +39,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService.authenticate(this.usernameFormControl.value, this.passwordFormControl.value)
       .subscribe(
-        (data: LoginToken) => {
+        (data: User) => {
           localStorage.setItem(AppSettings.API_TOKEN_KEY, data.token);
           this.loading = false;
+          // Navigate to home page after successful user login
+          this.router.navigate(['/']);
         },
         error => {
           this.snackBar.open(error, 'Dismiss', {

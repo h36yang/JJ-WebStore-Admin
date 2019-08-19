@@ -1,4 +1,4 @@
-export class LoginToken {
+export class User {
 
     token: string;
     id: number;

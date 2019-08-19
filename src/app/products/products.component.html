@@ -1,4 +1,7 @@
 <mat-toolbar color="primary">
+  <a mat-icon-button routerLink="/">
+    <i class="material-icons">arrow_back</i>
+  </a>
   <span>Manage Products</span>
 </mat-toolbar>
 
@@ -10,8 +13,7 @@
   <div *ngFor="let item of products">
     <mat-card [ngClass]="{ 'background-disable': !item.isActive }">
       <mat-card-header>
-        <img mat-card-avatar src="{{ baseApi }}Images/{{ item.avatarId }}"
-          [alt]="item.name">
+        <img mat-card-avatar [src]="baseApi + 'Images/' + item.avatarId" [alt]="item.name">
         <mat-card-title>
           <span>{{ item.id }}. {{ item.name }}</span>
           <span *ngIf="!item.isActive"> - Removed</span>
@@ -26,7 +28,7 @@
       </mat-card-header>
 
       <mat-card-actions>
-        <button mat-button color="primary" [disabled]="!item.isActive">Edit</button>
+        <a mat-button color="primary" [disabled]="!item.isActive" [routerLink]="'/product/' + item.id">Edit</a>
         <button mat-button color="warn"
           (click)="flipProduct(item.id, item.isActive)">{{ item.isActive ? 'Remove' : 'Recover' }}</button>
       </mat-card-actions>
