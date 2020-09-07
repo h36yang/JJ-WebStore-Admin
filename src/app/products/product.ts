@@ -1,10 +1,11 @@
+import { Image } from '../image-upload/image';
 
 export class Product {
 
     id: number;
     categoryId: number;
     avatarId?: number;
-    productImageIds?: number[];
+    productImages?: Image[];
     name: string;
     longName: string;
     description: string;

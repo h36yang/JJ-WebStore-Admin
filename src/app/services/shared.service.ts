@@ -26,4 +26,13 @@ export class SharedService {
       return throwError('Something bad happened; please try again later.');
     }
   }
+
+  public mergeArrays(...arrays: any[]) {
+    let jointArray = [];
+    arrays.forEach(array => {
+      jointArray = jointArray.concat(array);
+    });
+    const uniqueSet = new Set([...jointArray]);
+    return Array.from(uniqueSet);
+  }
 }

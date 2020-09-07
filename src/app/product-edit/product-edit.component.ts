@@ -4,9 +4,10 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ProductService } from '../services/product.service';
+import { environment } from '../../environments/environment';
 import { Product } from '../products/product';
 import { Image } from '../image-upload/image';
+import { ProductService } from '../services/product.service';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 
 @Component({
@@ -16,12 +17,15 @@ import { ImageUploadComponent } from '../image-upload/image-upload.component';
 })
 export class ProductEditComponent implements OnInit {
 
+  baseApi: string;
+
   loading = false;
   updating = false;
 
   productId: number;
   productCategory: string;
-  productImageIds: number[] = [];
+  productAvatarId: number;
+  productImages: Image[] = [];
 
   editProductForm: FormGroup;
 
@@ -31,6 +35,10 @@ export class ProductEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog) {
+    // Set Base API URL
+    this.baseApi = environment.baseApi;
+
+    // Initialize Forms
     this.editProductForm = this.formBuilder.group({
       nameControl: ['', Validators.required],
       longNameControl: ['', Validators.required],
@@ -65,6 +73,8 @@ export class ProductEditComponent implements OnInit {
             this.editProductForm.get('producerControl').setValue(data.producer);
             this.editProductForm.get('highlightControl').setValue(data.highlight);
             this.productCategory = `${data.categoryId}`;
+            this.productAvatarId = data.avatarId;
+            this.productImages = this.productImages.concat(data.productImages);
             this.loading = false;
           },
           error => this.onLoadError(error)
@@ -82,7 +92,7 @@ export class ProductEditComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: Image[]) => {
-      this.productImageIds = result.map(x => x.id);
+      this.productImages = this.productImages.concat(result);
     });
   }
 
@@ -103,7 +113,10 @@ export class ProductEditComponent implements OnInit {
       producer: this.editProductForm.get('producerControl').value,
       highlight: this.editProductForm.get('highlightControl').value,
       functions: [],
-      productImageIds: this.productImageIds,
+      productImages: this.productImages.map(x => {
+        x.file = null; // remove file content before updating product
+        return x;
+      }),
       isActive: true
     };
     console.log(product);
