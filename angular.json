@@ -134,5 +134,8 @@
       }
     }
   },
-  "defaultProject": "JJ-WebStore-Admin"
+  "defaultProject": "JJ-WebStore-Admin",
+  "cli": {
+    "analytics": false
+  }
 }

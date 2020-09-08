@@ -5,7 +5,7 @@
 export const environment = {
 
   production: false,
-  //baseApi: 'https://localhost:44314/api/'
+  // baseApi: 'https://localhost:44314/api/'
   baseApi: 'https://zcteaapi.azurewebsites.net/api/'
 };
 
